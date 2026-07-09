@@ -4,9 +4,36 @@
       {%- for block in section.blocks -%}
         {%- case block.type -%}
           {%- when 'text' -%}
-            <div class="site-footer__col" {{ block.shopify_attributes }}>
-              <h4 class="site-footer__heading">{{ block.settings.heading }}</h4>
+            <div class="site-footer__col site-footer__col--brand" {{ block.shopify_attributes }}>
+              <p class="site-footer__wordmark">{{ block.settings.heading }}</p>
               <div class="site-footer__text">{{ block.settings.text }}</div>
+              <div class="site-footer__social" aria-label="Social media">
+                {%- if section.settings.instagram_url != blank -%}
+                  <a href="{{ section.settings.instagram_url }}" class="site-footer__social-link" aria-label="Instagram" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" width="19" height="19" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.5" fill="currentColor"/></svg>
+                  </a>
+                {%- endif -%}
+                {%- if section.settings.tiktok_url != blank -%}
+                  <a href="{{ section.settings.tiktok_url }}" class="site-footer__social-link" aria-label="TikTok" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="19" height="19" aria-hidden="true"><path d="M14 4v9.5a4 4 0 1 1-4-4"/><path d="M14 4c.5 2.8 2.2 4.5 5 5"/></svg>
+                  </a>
+                {%- endif -%}
+                {%- if section.settings.youtube_url != blank -%}
+                  <a href="{{ section.settings.youtube_url }}" class="site-footer__social-link" aria-label="YouTube" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="19" height="19" aria-hidden="true"><rect x="3" y="6" width="18" height="12.5" rx="3.5"/><path d="M10.5 9.75l4.5 2.5-4.5 2.5z"/></svg>
+                  </a>
+                {%- endif -%}
+                {%- if section.settings.x_url != blank -%}
+                  <a href="{{ section.settings.x_url }}" class="site-footer__social-link" aria-label="X" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" width="19" height="19" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
+                  </a>
+                {%- endif -%}
+                {%- if section.settings.pinterest_url != blank -%}
+                  <a href="{{ section.settings.pinterest_url }}" class="site-footer__social-link" aria-label="Pinterest" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="19" height="19" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M10.2 20l2.3-8.5M9 10.5c.3-1.8 1.7-3 3.4-3 1.8 0 3 1.1 3 2.8 0 2-1.3 3.7-3.2 3.7-.9 0-1.6-.4-1.9-1"/></svg>
+                  </a>
+                {%- endif -%}
+              </div>
             </div>
           {%- when 'menu' -%}
             <div class="site-footer__col" {{ block.shopify_attributes }}>
@@ -20,12 +47,36 @@
           {%- when 'newsletter' -%}
             <div class="site-footer__col site-footer__col--newsletter" {{ block.shopify_attributes }}>
               <h4 class="site-footer__heading">{{ block.settings.heading }}</h4>
-              <p>{{ block.settings.subheading }}</p>
+              <p class="site-footer__newsletter-sub">{{ block.settings.subheading }}</p>
               {%- form 'customer', class: 'site-footer__newsletter-form' -%}
                 <input type="hidden" name="contact[tags]" value="newsletter">
-                <input type="email" name="contact[email]" placeholder="Email address" required>
+                <input type="email" name="contact[email]" placeholder="Email address" required aria-label="Email address">
                 <button type="submit">Sign up</button>
               {%- endform -%}
+              <p class="site-footer__newsletter-note">By signing up, you agree to receive Lushby emails. Unsubscribe anytime.</p>
+            </div>
+          {%- when 'app' -%}
+            <div class="site-footer__col site-footer__col--app" {{ block.shopify_attributes }}>
+              <h4 class="site-footer__heading">{{ block.settings.heading }}</h4>
+              <p class="site-footer__app-text">{{ block.settings.text }}</p>
+              <div class="site-footer__app">
+                <span class="site-footer__app-qr">
+                  {%- if block.settings.qr_image != blank -%}
+                    {{ block.settings.qr_image | image_url: width: 200 | image_tag: alt: 'Scan to download', class: 'site-footer__app-qr-img' }}
+                  {%- else -%}
+                    <svg viewBox="0 0 80 80" width="80" height="80" aria-hidden="true"><rect width="80" height="80" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.35"/><rect x="10" y="10" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" opacity="0.6"/><rect x="52" y="10" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" opacity="0.6"/><rect x="10" y="52" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" opacity="0.6"/><rect x="40" y="40" width="8" height="8" fill="currentColor" opacity="0.5"/><rect x="56" y="44" width="6" height="6" fill="currentColor" opacity="0.5"/><rect x="44" y="58" width="6" height="6" fill="currentColor" opacity="0.5"/><rect x="60" y="58" width="8" height="8" fill="currentColor" opacity="0.5"/></svg>
+                  {%- endif -%}
+                </span>
+                <span class="site-footer__app-links">
+                  <span class="site-footer__app-hint">Scan to download</span>
+                  {%- if block.settings.appstore_url != blank -%}
+                    <a href="{{ block.settings.appstore_url }}" target="_blank" rel="noopener">App Store</a>
+                  {%- endif -%}
+                  {%- if block.settings.play_url != blank -%}
+                    <a href="{{ block.settings.play_url }}" target="_blank" rel="noopener">Google Play</a>
+                  {%- endif -%}
+                </span>
+              </div>
             </div>
         {%- endcase -%}
       {%- endfor -%}
@@ -33,6 +84,11 @@
 
     <div class="site-footer__bottom">
       <p class="site-footer__copyright">&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</p>
+      <ul class="site-footer__legal">
+        <li><a href="{{ routes.root_url }}policies/privacy-policy">Privacy Policy</a></li>
+        <li><a href="{{ routes.root_url }}policies/terms-of-service">Terms of Service</a></li>
+        <li><a href="{{ routes.root_url }}policies/refund-policy">Returns</a></li>
+      </ul>
       {%- if section.settings.show_payment_icons -%}
         <ul class="site-footer__payment">
           {%- for type in shop.enabled_payment_types -%}
@@ -48,12 +104,19 @@
 {
   "name": "Footer",
   "settings": [
-    { "type": "checkbox", "id": "show_payment_icons", "label": "Show payment icons", "default": true }
+    { "type": "checkbox", "id": "show_payment_icons", "label": "Show payment icons", "default": true },
+    { "type": "header", "content": "Social media" },
+    { "type": "url", "id": "instagram_url", "label": "Instagram" },
+    { "type": "url", "id": "tiktok_url", "label": "TikTok" },
+    { "type": "url", "id": "youtube_url", "label": "YouTube" },
+    { "type": "url", "id": "x_url", "label": "X" },
+    { "type": "url", "id": "pinterest_url", "label": "Pinterest" }
   ],
   "blocks": [
     {
       "type": "text",
-      "name": "Text column",
+      "name": "Brand column",
+      "limit": 1,
       "settings": [
         { "type": "text", "id": "heading", "label": "Heading", "default": "About" },
         { "type": "richtext", "id": "text", "label": "Text", "default": "<p>A modern beauty destination.</p>" }
@@ -74,6 +137,18 @@
       "settings": [
         { "type": "text", "id": "heading", "label": "Heading", "default": "Stay in the glow" },
         { "type": "text", "id": "subheading", "label": "Subheading", "default": "New arrivals, exclusive offers, and beauty tips." }
+      ]
+    },
+    {
+      "type": "app",
+      "name": "App promo",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Lushby, in your pocket" },
+        { "type": "text", "id": "text", "label": "Text", "default": "Exclusive app-only drops and early access." },
+        { "type": "image_picker", "id": "qr_image", "label": "QR code image" },
+        { "type": "url", "id": "appstore_url", "label": "App Store URL" },
+        { "type": "url", "id": "play_url", "label": "Google Play URL" }
       ]
     }
   ],

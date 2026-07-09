@@ -4,13 +4,57 @@
   "sections": {
     "footer": {
       "type": "footer",
-      "blocks": {
-        "about": { "type": "text", "settings": { "heading": "Lushby", "text": "<p>Clean, conscious beauty curated for every skin story.</p>" } },
-        "shop": { "type": "menu", "settings": { "heading": "Shop" } },
-        "newsletter": { "type": "newsletter", "settings": { "heading": "Join the Lushby list", "subheading": "New launches, exclusive offers and beauty edits." } }
+      "settings": {
+        "show_payment_icons": true,
+        "instagram_url": "https://instagram.com",
+        "tiktok_url": "https://tiktok.com",
+        "youtube_url": "https://youtube.com"
       },
-      "block_order": ["about", "shop", "newsletter"]
+      "blocks": {
+        "about": {
+          "type": "text",
+          "settings": {
+            "heading": "lushby",
+            "text": "<p>Clean, conscious beauty curated for every skin story.</p>"
+          }
+        },
+        "shop": {
+          "type": "menu",
+          "settings": {
+            "heading": "Shop"
+          }
+        },
+        "help": {
+          "type": "menu",
+          "settings": {
+            "heading": "Help"
+          }
+        },
+        "newsletter": {
+          "type": "newsletter",
+          "settings": {
+            "heading": "Join the Lushby list",
+            "subheading": "New launches, exclusive offers and beauty edits."
+          }
+        },
+        "app": {
+          "type": "app",
+          "settings": {
+            "heading": "Lushby, in your pocket",
+            "text": "Exclusive app-only drops and early access."
+          }
+        }
+      },
+      "block_order": [
+        "about",
+        "shop",
+        "help",
+        "newsletter",
+        "app"
+      ]
     }
   },
-  "order": ["footer"]
+  "order": [
+    "footer"
+  ]
 }

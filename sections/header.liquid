@@ -1,4 +1,34 @@
 <header class="site-header" data-sticky="{{ section.settings.sticky }}">
+  <div class="site-header__utility">
+    <div class="page-width site-header__utility-inner">
+      <div class="site-header__utility-side">
+        {%- if section.settings.live_url != blank -%}
+          <a href="{{ section.settings.live_url }}" class="site-header__utility-link site-header__live-link">
+            <span class="site-header__live-icon">
+              {% render 'icon-video' %}
+              <i class="site-header__live-dot" aria-hidden="true"></i>
+            </span>
+            <span>Watch Live Show</span>
+          </a>
+        {%- endif -%}
+      </div>
+      <div class="site-header__utility-side">
+        {%- if section.settings.help_url != blank -%}
+          <a href="{{ section.settings.help_url }}" class="site-header__utility-link site-header__utility-link--quiet">
+            <span>Help &amp; FAQ</span>
+          </a>
+        {%- endif -%}
+        {%- if section.settings.enable_chat -%}
+          <button type="button" class="site-header__utility-link site-header__chat-trigger" data-chat-open aria-haspopup="dialog">
+            {% render 'icon-sparkle' %}
+            <span>{{ section.settings.chat_label }}</span>
+            <em class="site-header__chat-beta">beta</em>
+          </button>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
   <div class="site-header__inner page-width">
     <button class="site-header__menu-toggle" aria-label="Open menu" data-menu-toggle>
       {% render 'icon-menu' %}
@@ -33,12 +63,6 @@
         {% render 'icon-user' %}
         <span class="site-header__action-label">Account</span>
       </a>
-      {%- if section.settings.stores_url != blank -%}
-        <a href="{{ section.settings.stores_url }}" class="site-header__action site-header__action--desktop">
-          {% render 'icon-pin' %}
-          <span class="site-header__action-label">Stores</span>
-        </a>
-      {%- endif -%}
       <a href="{{ section.settings.wishlist_url | default: '#' }}" class="site-header__action site-header__action--desktop">
         {% render 'icon-heart' %}
         <span class="site-header__action-label">Wishlist</span>
@@ -76,6 +100,12 @@
       {%- for link in section.settings.menu.links -%}
         <li><a href="{{ link.url }}">{{ link.title }}</a></li>
       {%- endfor -%}
+      {%- if section.settings.live_url != blank -%}
+        <li><a href="{{ section.settings.live_url }}">Watch Live Show</a></li>
+      {%- endif -%}
+      {%- if section.settings.help_url != blank -%}
+        <li><a href="{{ section.settings.help_url }}">Help &amp; FAQ</a></li>
+      {%- endif -%}
     </ul>
   </div>
 
@@ -105,6 +135,43 @@
       </div>
     </div>
   </div>
+
+  {%- if section.settings.enable_chat -%}
+    {%- comment -%} AI beauty chat drawer (scripted demo — wire to a real AI later) {%- endcomment -%}
+    <div class="ai-chat" data-chat-drawer hidden>
+      <div class="ai-chat__overlay" data-chat-close></div>
+      <aside class="ai-chat__panel" role="dialog" aria-modal="true" aria-label="{{ section.settings.chat_label | escape }}">
+        <header class="ai-chat__header">
+          <div class="ai-chat__identity">
+            <span class="ai-chat__avatar">{% render 'icon-sparkle' %}</span>
+            <span>
+              <span class="ai-chat__name">{{ section.settings.chat_label }}</span>
+              <span class="ai-chat__role">Personal beauty advisor</span>
+            </span>
+          </div>
+          <button type="button" class="ai-chat__close" data-chat-close aria-label="Close chat">
+            {% render 'icon-close' %}
+          </button>
+        </header>
+        <div class="ai-chat__body" data-chat-body>
+          <div class="ai-chat__msg ai-chat__msg--ai">{{ section.settings.chat_greeting }}</div>
+          <div class="ai-chat__chips" data-chat-chips>
+            <button type="button" class="ai-chat__chip" data-chat-chip="routine">Build me a routine</button>
+            <button type="button" class="ai-chat__chip" data-chat-chip="foundation">Find my foundation shade</button>
+            <button type="button" class="ai-chat__chip" data-chat-chip="gift">Gift ideas</button>
+            <button type="button" class="ai-chat__chip" data-chat-chip="trending">What's trending?</button>
+          </div>
+        </div>
+        <form class="ai-chat__composer" data-chat-form>
+          <input type="text" class="ai-chat__input" placeholder="Ask me anything beauty…" data-chat-input aria-label="Your message" autocomplete="off">
+          <button type="submit" class="ai-chat__send" aria-label="Send">
+            {% render 'icon-send' %}
+          </button>
+        </form>
+        <p class="ai-chat__disclaimer">Preview — responses are scripted demo content.</p>
+      </aside>
+    </div>
+  {%- endif -%}
 </header>
 
 {% schema %}
@@ -113,9 +180,14 @@
   "settings": [
     { "type": "image_picker", "id": "logo", "label": "Logo" },
     { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
-    { "type": "url", "id": "stores_url", "label": "Stores link" },
+    { "type": "url", "id": "live_url", "label": "Live show link" },
+    { "type": "url", "id": "help_url", "label": "Help link" },
     { "type": "url", "id": "wishlist_url", "label": "Wishlist link" },
-    { "type": "checkbox", "id": "sticky", "label": "Sticky header", "default": true }
+    { "type": "checkbox", "id": "sticky", "label": "Sticky header", "default": true },
+    { "type": "header", "content": "AI beauty chat" },
+    { "type": "checkbox", "id": "enable_chat", "label": "Enable AI beauty chat", "default": true },
+    { "type": "text", "id": "chat_label", "label": "Chat name", "default": "Lushby AI" },
+    { "type": "textarea", "id": "chat_greeting", "label": "Greeting message", "default": "Hi, gorgeous. I'm your personal beauty advisor — ask me about routines, shades, gifts or anything in between." }
   ]
 }
 {% endschema %}

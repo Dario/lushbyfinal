@@ -18,6 +18,18 @@
 
   <div class="hero-banner__overlay hero-banner__overlay--{{ section.settings.text_align }}" style="opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};"></div>
 
+  {%- for block in section.blocks -%}
+    {%- assign fg = block.settings.foreground_image -%}
+    {%- if fg == blank and block.settings.fg_product != blank -%}
+      {%- assign fg = block.settings.fg_product.featured_image -%}
+    {%- endif -%}
+    {%- if fg != blank -%}
+      <div class="hero-slider__fg hero-slider__fg--{{ block.settings.image_position | default: 'right' }}{% if forloop.first %} is-active{% endif %}" data-hero-fg data-index="{{ forloop.index0 }}">
+        <img src="{{ fg | image_url: width: 1200 }}" alt="{{ block.settings.heading | escape }}" loading="lazy">
+      </div>
+    {%- endif -%}
+  {%- endfor -%}
+
   <div class="page-width hero-banner__inner hero-banner__inner--{{ section.settings.text_align }}">
     {%- for block in section.blocks -%}
       <div class="hero-slider__copy{% if forloop.first %} is-active{% endif %}" data-hero-copy>
@@ -35,7 +47,11 @@
           <div class="hero-banner__text">{{ block.settings.text }}</div>
         {%- endif -%}
         {%- if block.settings.button_label != blank -%}
-          <a href="{{ block.settings.button_url }}" class="btn btn--primary" data-sparkle-cta>{{ block.settings.button_label }}</a>
+          {%- assign cta_url = block.settings.button_url -%}
+          {%- if cta_url == blank and block.settings.fg_product != blank -%}
+            {%- assign cta_url = block.settings.fg_product.url -%}
+          {%- endif -%}
+          <a href="{{ cta_url }}" class="btn btn--primary" data-sparkle-cta>{{ block.settings.button_label }}</a>
         {%- endif -%}
       </div>
     {%- endfor -%}
@@ -81,6 +97,15 @@
       "name": "Slide",
       "settings": [
         { "type": "image_picker", "id": "bg_image", "label": "Background image" },
+        { "type": "image_picker", "id": "foreground_image", "label": "Foreground image", "info": "Transparent PNG rendered on top of the banner (product cutout, badge, etc.)" },
+        { "type": "product", "id": "fg_product", "label": "Or pick a product", "info": "Used when no foreground image is uploaded: shows this product's featured image, and the button links to it if no URL is set" },
+        {
+          "type": "select", "id": "image_position", "label": "Foreground image position", "default": "right",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "right", "label": "Right" }
+          ]
+        },
         { "type": "text", "id": "subheading", "label": "Subheading", "default": "NEW THIS WEEK" },
         { "type": "text", "id": "heading", "label": "Heading", "default": "Beauty without limits" },
         { "type": "richtext", "id": "text", "label": "Text" },

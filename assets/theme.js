@@ -419,6 +419,7 @@
     const slides = slider.querySelectorAll('[data-hero-slide]');
     const copies = slider.querySelectorAll('[data-hero-copy]');
     const dots = slider.querySelectorAll('[data-hero-dot]');
+    const fgs = slider.querySelectorAll('[data-hero-fg]');
     const autoplay = parseInt(slider.dataset.autoplay, 10) || 5000;
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let current = 0;
@@ -428,6 +429,7 @@
       slides.forEach(function (s, i) { s.classList.toggle('is-active', i === n); });
       copies.forEach(function (c, i) { c.classList.toggle('is-active', i === n); });
       dots.forEach(function (d, i) { d.classList.toggle('is-active', i === n); });
+      fgs.forEach(function (f) { f.classList.toggle('is-active', parseInt(f.dataset.index, 10) === n); });
       current = n;
     }
     function next() { goTo((current + 1) % slides.length); }
@@ -470,4 +472,79 @@
       });
     });
   });
+
+  // ===== AI beauty chat (scripted demo — swap aiRespond() source for a real AI later) =====
+  const chatDrawer = document.querySelector('[data-chat-drawer]');
+  if (chatDrawer) {
+    const chatBody = chatDrawer.querySelector('[data-chat-body]');
+    const chatForm = chatDrawer.querySelector('[data-chat-form]');
+    const chatInput = chatDrawer.querySelector('[data-chat-input]');
+    const replies = {
+      routine: "Let's build it. A simple, high-impact routine: 1) Hydra Glow Serum to hydrate and plump, 2) Dewy Skin Tint SPF 30 for coverage plus protection, 3) Soft Matte Lip Cream to finish. Want it tailored to dry, oily or combination skin?",
+      foundation: "Happy to match you. Most guests land within two shades of their neck tone — our Dewy Skin Tint comes in 24 flexible shades that self-adjust. Tell me your undertone (cool, neutral or warm) and I'll narrow it down.",
+      gift: "Three most-loved gifts under $50: Soft Matte Lip Cream ($24), Niacinamide 10% Booster ($19), and the Mini Glow Discovery Set ($42). All arrive gift-ready.",
+      trending: "The glazed-skin look is everywhere right now — Hydra Glow Serum layered with Liquid Highlighter Drops. Also trending: Maison Rose eau de parfum and heatless curl kits."
+    };
+    const fallback = "Love that question. I'm in preview right now, so my full brain isn't connected yet — soon I'll answer from Lushby's live catalog. Meanwhile, try one of the suggestions above.";
+
+    function chatOpen() {
+      chatDrawer.hidden = false;
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () { chatDrawer.classList.add('is-open'); });
+      });
+      if (chatInput) chatInput.focus();
+    }
+    function chatClose() {
+      chatDrawer.classList.remove('is-open');
+      setTimeout(function () { chatDrawer.hidden = true; }, 350);
+    }
+    document.addEventListener('click', function (e) {
+      if (e.target.closest('[data-chat-open]')) chatOpen();
+      if (e.target.closest('[data-chat-close]')) chatClose();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !chatDrawer.hidden) chatClose();
+    });
+
+    function addMsg(text, who) {
+      const d = document.createElement('div');
+      d.className = 'ai-chat__msg ai-chat__msg--' + who;
+      d.textContent = text;
+      chatBody.appendChild(d);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+    function aiRespond(text) {
+      const typing = document.createElement('div');
+      typing.className = 'ai-chat__typing';
+      typing.innerHTML = '<i></i><i></i><i></i>';
+      chatBody.appendChild(typing);
+      chatBody.scrollTop = chatBody.scrollHeight;
+      setTimeout(function () {
+        typing.remove();
+        addMsg(text, 'ai');
+      }, 900 + Math.random() * 700);
+    }
+    document.addEventListener('click', function (e) {
+      const chip = e.target.closest('[data-chat-chip]');
+      if (!chip) return;
+      addMsg(chip.textContent, 'user');
+      aiRespond(replies[chip.dataset.chatChip] || fallback);
+    });
+    if (chatForm) {
+      chatForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const val = chatInput.value.trim();
+        if (!val) return;
+        chatInput.value = '';
+        addMsg(val, 'user');
+        const v = val.toLowerCase();
+        let key = null;
+        if (v.indexOf('routine') > -1 || v.indexOf('skincare') > -1) key = 'routine';
+        else if (v.indexOf('shade') > -1 || v.indexOf('foundation') > -1 || v.indexOf('tint') > -1) key = 'foundation';
+        else if (v.indexOf('gift') > -1) key = 'gift';
+        else if (v.indexOf('trend') > -1 || v.indexOf('popular') > -1) key = 'trending';
+        aiRespond(key ? replies[key] : fallback);
+      });
+    }
+  }
 })();

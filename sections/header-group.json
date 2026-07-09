@@ -4,16 +4,36 @@
   "sections": {
     "announcement-bar": {
       "type": "announcement-bar",
-      "settings": { "bg_color": "#221c17", "text_color": "#f5ede2" },
-      "blocks": {
-        "a1": { "type": "announcement", "settings": { "text": "Free shipping on orders over $45 — new members get 15% off" } }
+      "settings": {
+        "bg_color": "#221c17",
+        "text_color": "#f5ede2"
       },
-      "block_order": ["a1"]
+      "blocks": {
+        "a1": {
+          "type": "announcement",
+          "settings": {
+            "text": "Free shipping on orders over $45 — new members get 15% off"
+          }
+        }
+      },
+      "block_order": [
+        "a1"
+      ]
     },
     "header": {
       "type": "header",
-      "settings": { "sticky": true }
+      "settings": {
+        "sticky": true,
+        "live_url": "/pages/live",
+        "help_url": "/pages/help",
+        "enable_chat": true,
+        "chat_label": "Lushby AI",
+        "chat_greeting": "Hi, gorgeous. I'm your personal beauty advisor — ask me about routines, shades, gifts or anything in between."
+      }
     }
   },
-  "order": ["announcement-bar", "header"]
+  "order": [
+    "announcement-bar",
+    "header"
+  ]
 }
