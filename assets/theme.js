@@ -413,4 +413,61 @@
     const pressed = btn.getAttribute('aria-pressed') === 'true';
     btn.setAttribute('aria-pressed', pressed ? 'false' : 'true');
   });
+
+  // ===== Hero slider: crossfade + dots + autoplay + glitter =====
+  document.querySelectorAll('[data-hero-slider]').forEach(function (slider) {
+    const slides = slider.querySelectorAll('[data-hero-slide]');
+    const copies = slider.querySelectorAll('[data-hero-copy]');
+    const dots = slider.querySelectorAll('[data-hero-dot]');
+    const autoplay = parseInt(slider.dataset.autoplay, 10) || 5000;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let current = 0;
+    let timer = null;
+
+    function goTo(n) {
+      slides.forEach(function (s, i) { s.classList.toggle('is-active', i === n); });
+      copies.forEach(function (c, i) { c.classList.toggle('is-active', i === n); });
+      dots.forEach(function (d, i) { d.classList.toggle('is-active', i === n); });
+      current = n;
+    }
+    function next() { goTo((current + 1) % slides.length); }
+    function restart() {
+      if (timer) clearInterval(timer);
+      if (slides.length > 1 && !reducedMotion) timer = setInterval(next, autoplay);
+    }
+    dots.forEach(function (dot, i) {
+      dot.addEventListener('click', function () { goTo(i); restart(); });
+    });
+    restart();
+
+    // Glitter burst across the banner on CTA hover
+    if (!slider.hasAttribute('data-glitter') || reducedMotion) return;
+    const colors = ['#ffe9a8', '#ffd76e', '#fff3d6', '#ffffff', '#ffc9e0', '#d6ecff'];
+    let glitterTimer = null;
+    function spawn(count) {
+      for (let i = 0; i < count; i++) {
+        const g = document.createElement('span');
+        const star = Math.random() < 0.35;
+        g.className = 'hero-glitter ' + (star ? 'hero-glitter--star' : 'hero-glitter--dot');
+        g.style.left = (Math.random() * 100) + '%';
+        g.style.top = (Math.random() * 100) + '%';
+        g.style.setProperty('--s', (star ? 10 + Math.random() * 16 : 3 + Math.random() * 7) + 'px');
+        g.style.setProperty('--d', (0.5 + Math.random() * 0.7) + 's');
+        g.style.setProperty('--c', colors[Math.floor(Math.random() * colors.length)]);
+        slider.appendChild(g);
+        g.addEventListener('animationend', function () { this.remove(); });
+      }
+    }
+    slider.querySelectorAll('[data-sparkle-cta]').forEach(function (cta) {
+      cta.addEventListener('mouseenter', function () {
+        spawn(40);
+        clearInterval(glitterTimer);
+        glitterTimer = setInterval(function () { spawn(24); }, 140);
+      });
+      cta.addEventListener('mouseleave', function () {
+        clearInterval(glitterTimer);
+        glitterTimer = null;
+      });
+    });
+  });
 })();

@@ -6,26 +6,102 @@
         "height": "large",
         "text_align": "left",
         "overlay_opacity": 40,
-        "subheading": "THE SUMMER EDIT",
-        "heading": "Glow that lasts all season",
-        "text": "<p>Lightweight skin tints, dewy balms and sun-kissed colour — curated by Lushby.</p>",
-        "button_label": "Shop the edit",
-        "button_url": "/collections/all",
-        "button_style": "primary"
-      }
+        "autoplay_speed": 5,
+        "enable_glitter": true
+      },
+      "blocks": {
+        "s1": {
+          "type": "slide",
+          "settings": {
+            "subheading": "THE SUMMER EDIT",
+            "heading": "Glow that lasts all season",
+            "text": "<p>Lightweight skin tints, dewy balms and sun-kissed colour — curated by Lushby.</p>",
+            "button_label": "Shop the edit",
+            "button_url": "/collections/all"
+          }
+        },
+        "s2": {
+          "type": "slide",
+          "settings": {
+            "subheading": "NEW IN FRAGRANCE",
+            "heading": "Find your signature scent",
+            "button_label": "Explore fragrance",
+            "button_url": "/collections/fragrance"
+          }
+        },
+        "s3": {
+          "type": "slide",
+          "settings": {
+            "subheading": "LUSHBY REWARDS",
+            "heading": "Beauty that gives back",
+            "button_label": "Join free",
+            "button_url": "/account/register"
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ]
     },
     "categories": {
       "type": "category-tiles",
-      "settings": { "heading": "Shop by category" },
-      "blocks": {
-        "b1": { "type": "tile", "settings": { "title": "Makeup", "link": "/collections/makeup" } },
-        "b2": { "type": "tile", "settings": { "title": "Skincare", "link": "/collections/skincare" } },
-        "b3": { "type": "tile", "settings": { "title": "Hair", "link": "/collections/hair" } },
-        "b4": { "type": "tile", "settings": { "title": "Fragrance", "link": "/collections/fragrance" } },
-        "b5": { "type": "tile", "settings": { "title": "Body", "link": "/collections/body" } },
-        "b6": { "type": "tile", "settings": { "title": "Tools", "link": "/collections/tools" } }
+      "settings": {
+        "heading": "Shop by category"
       },
-      "block_order": ["b1", "b2", "b3", "b4", "b5", "b6"]
+      "blocks": {
+        "b1": {
+          "type": "tile",
+          "settings": {
+            "title": "Makeup",
+            "link": "/collections/makeup"
+          }
+        },
+        "b2": {
+          "type": "tile",
+          "settings": {
+            "title": "Skincare",
+            "link": "/collections/skincare"
+          }
+        },
+        "b3": {
+          "type": "tile",
+          "settings": {
+            "title": "Hair",
+            "link": "/collections/hair"
+          }
+        },
+        "b4": {
+          "type": "tile",
+          "settings": {
+            "title": "Fragrance",
+            "link": "/collections/fragrance"
+          }
+        },
+        "b5": {
+          "type": "tile",
+          "settings": {
+            "title": "Body",
+            "link": "/collections/body"
+          }
+        },
+        "b6": {
+          "type": "tile",
+          "settings": {
+            "title": "Tools",
+            "link": "/collections/tools"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4",
+        "b5",
+        "b6"
+      ]
     },
     "trending": {
       "type": "featured-collection",
@@ -40,10 +116,31 @@
     "promo": {
       "type": "promo-grid",
       "blocks": {
-        "p1": { "type": "promo", "settings": { "subheading": "SKINCARE", "heading": "Your skincare ritual", "text": "Build your barrier with clean, conscious formulas.", "link_label": "Discover", "link": "/collections/skincare" } },
-        "p2": { "type": "promo", "settings": { "subheading": "FRAGRANCE", "heading": "Signature scents", "text": "Find the fragrance that feels like you.", "link_label": "Explore", "link": "/collections/fragrance" } }
+        "p1": {
+          "type": "promo",
+          "settings": {
+            "subheading": "SKINCARE",
+            "heading": "Your skincare ritual",
+            "text": "Build your barrier with clean, conscious formulas.",
+            "link_label": "Discover",
+            "link": "/collections/skincare"
+          }
+        },
+        "p2": {
+          "type": "promo",
+          "settings": {
+            "subheading": "FRAGRANCE",
+            "heading": "Signature scents",
+            "text": "Find the fragrance that feels like you.",
+            "link_label": "Explore",
+            "link": "/collections/fragrance"
+          }
+        }
       },
-      "block_order": ["p1", "p2"]
+      "block_order": [
+        "p1",
+        "p2"
+      ]
     },
     "rewards": {
       "type": "image-with-text",
@@ -74,24 +171,91 @@
         "subheading": "Tips, tutorials and stories from the Lushby community."
       },
       "blocks": {
-        "e1": { "type": "article", "settings": { "category": "Tutorial", "title": "The 5-minute summer glow", "excerpt": "A pared-back routine for radiant, no-makeup skin in minutes.", "link": "/blogs/news" } },
-        "e2": { "type": "article", "settings": { "category": "Guide", "title": "How to layer your serums", "excerpt": "The right order makes all the difference. Here is our cheat sheet.", "link": "/blogs/news" } },
-        "e3": { "type": "article", "settings": { "category": "Stories", "title": "Behind the scent: Maison Rose", "excerpt": "Meet the perfumer crafting Lushby exclusive fragrances.", "link": "/blogs/news" } }
+        "e1": {
+          "type": "article",
+          "settings": {
+            "category": "Tutorial",
+            "title": "The 5-minute summer glow",
+            "excerpt": "A pared-back routine for radiant, no-makeup skin in minutes.",
+            "link": "/blogs/news"
+          }
+        },
+        "e2": {
+          "type": "article",
+          "settings": {
+            "category": "Guide",
+            "title": "How to layer your serums",
+            "excerpt": "The right order makes all the difference. Here is our cheat sheet.",
+            "link": "/blogs/news"
+          }
+        },
+        "e3": {
+          "type": "article",
+          "settings": {
+            "category": "Stories",
+            "title": "Behind the scent: Maison Rose",
+            "excerpt": "Meet the perfumer crafting Lushby exclusive fragrances.",
+            "link": "/blogs/news"
+          }
+        }
       },
-      "block_order": ["e1", "e2", "e3"]
+      "block_order": [
+        "e1",
+        "e2",
+        "e3"
+      ]
     },
     "brands": {
       "type": "brand-strip",
-      "settings": { "heading": "Shop our brands" },
-      "blocks": {
-        "x1": { "type": "brand", "settings": { "name": "Aura Skin" } },
-        "x2": { "type": "brand", "settings": { "name": "Velvet & Co" } },
-        "x3": { "type": "brand", "settings": { "name": "Botanica" } },
-        "x4": { "type": "brand", "settings": { "name": "Lumi" } },
-        "x5": { "type": "brand", "settings": { "name": "Maison Rose" } },
-        "x6": { "type": "brand", "settings": { "name": "Pure Lab" } }
+      "settings": {
+        "heading": "Shop our brands"
       },
-      "block_order": ["x1", "x2", "x3", "x4", "x5", "x6"]
+      "blocks": {
+        "x1": {
+          "type": "brand",
+          "settings": {
+            "name": "Aura Skin"
+          }
+        },
+        "x2": {
+          "type": "brand",
+          "settings": {
+            "name": "Velvet & Co"
+          }
+        },
+        "x3": {
+          "type": "brand",
+          "settings": {
+            "name": "Botanica"
+          }
+        },
+        "x4": {
+          "type": "brand",
+          "settings": {
+            "name": "Lumi"
+          }
+        },
+        "x5": {
+          "type": "brand",
+          "settings": {
+            "name": "Maison Rose"
+          }
+        },
+        "x6": {
+          "type": "brand",
+          "settings": {
+            "name": "Pure Lab"
+          }
+        }
+      },
+      "block_order": [
+        "x1",
+        "x2",
+        "x3",
+        "x4",
+        "x5",
+        "x6"
+      ]
     },
     "newsletter": {
       "type": "newsletter",
@@ -102,5 +266,15 @@
       }
     }
   },
-  "order": ["hero", "categories", "trending", "promo", "rewards", "newarrivals", "editorial", "brands", "newsletter"]
+  "order": [
+    "hero",
+    "categories",
+    "trending",
+    "promo",
+    "rewards",
+    "newarrivals",
+    "editorial",
+    "brands",
+    "newsletter"
+  ]
 }
