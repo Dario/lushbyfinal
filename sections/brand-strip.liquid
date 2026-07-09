@@ -19,29 +19,75 @@
 {
   "name": "Brand strip",
   "settings": [
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Shop our brands" }
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop our brands"
+    }
   ],
   "blocks": [
     {
       "type": "brand",
       "name": "Brand",
       "settings": [
-        { "type": "text", "id": "name", "label": "Brand name", "default": "Aura Skin" },
-        { "type": "url", "id": "link", "label": "Link" }
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Brand name",
+          "default": "Aura Skin"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
       ]
     }
   ],
   "max_blocks": 8,
-  "default": {
-    "blocks": [
-      { "type": "brand", "settings": { "name": "Aura Skin" } },
-      { "type": "brand", "settings": { "name": "Velvet & Co" } },
-      { "type": "brand", "settings": { "name": "Botanica" } },
-      { "type": "brand", "settings": { "name": "Lumi" } },
-      { "type": "brand", "settings": { "name": "Maison Rose" } },
-      { "type": "brand", "settings": { "name": "Pure Lab" } }
-    ]
-  },
-  "presets": [{ "name": "Brand strip" }]
+  "presets": [
+    {
+      "name": "Brand strip",
+      "blocks": [
+        {
+          "type": "brand",
+          "settings": {
+            "name": "Aura Skin"
+          }
+        },
+        {
+          "type": "brand",
+          "settings": {
+            "name": "Velvet & Co"
+          }
+        },
+        {
+          "type": "brand",
+          "settings": {
+            "name": "Botanica"
+          }
+        },
+        {
+          "type": "brand",
+          "settings": {
+            "name": "Lumi"
+          }
+        },
+        {
+          "type": "brand",
+          "settings": {
+            "name": "Maison Rose"
+          }
+        },
+        {
+          "type": "brand",
+          "settings": {
+            "name": "Pure Lab"
+          }
+        }
+      ]
+    }
+  ]
 }
 {% endschema %}
