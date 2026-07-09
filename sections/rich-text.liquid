@@ -1,0 +1,55 @@
+<section class="rich-text rich-text--{{ section.settings.text_align }}">
+  <div class="page-width rich-text__inner">
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'heading' -%}
+          <h2 class="rich-text__heading" {{ block.shopify_attributes }}>{{ block.settings.heading }}</h2>
+        {%- when 'text' -%}
+          <div class="rich-text__text" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+        {%- when 'button' -%}
+          <a href="{{ block.settings.button_url }}" class="btn btn--primary" {{ block.shopify_attributes }}>{{ block.settings.button_label }}</a>
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Rich text",
+  "settings": [
+    {
+      "type": "select", "id": "text_align", "label": "Text alignment", "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "Heading",
+      "settings": [{ "type": "text", "id": "heading", "label": "Heading", "default": "About us" }]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [{ "type": "richtext", "id": "text", "label": "Text", "default": "<p>Share your story.</p>" }]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "settings": [
+        { "type": "text", "id": "button_label", "label": "Button label" },
+        { "type": "url", "id": "button_url", "label": "Button URL" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Rich text",
+      "blocks": [{ "type": "heading" }, { "type": "text" }]
+    }
+  ]
+}
+{% endschema %}

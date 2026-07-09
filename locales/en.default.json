@@ -1,0 +1,75 @@
+{
+  "general": {
+    "meta": {
+      "tags": "Tagged \"{{ tags }}\"",
+      "page": "Page {{ page }}"
+    },
+    "search": {
+      "placeholder": "Search products, brands, ingredients...",
+      "submit": "Search",
+      "no_results": "No results found."
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
+  "accessibility": {
+    "skip_to_content": "Skip to content",
+    "close": "Close",
+    "menu": "Menu"
+  },
+  "cart": {
+    "general": {
+      "title": "Your bag",
+      "empty": "Your bag is empty.",
+      "subtotal": "Subtotal",
+      "checkout": "Checkout",
+      "view_cart": "View bag",
+      "update": "Update",
+      "remove": "Remove",
+      "quantity": "Quantity",
+      "taxes_and_shipping_at_checkout": "Shipping & taxes calculated at checkout."
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to bag",
+      "sold_out": "Sold out",
+      "vendor": "Vendor",
+      "quantity": "Quantity"
+    }
+  },
+  "newsletter": {
+    "heading": "Be the first to know",
+    "subheading": "Get early access to launches, exclusive offers, and beauty tips.",
+    "email_placeholder": "Email address",
+    "submit": "Sign up",
+    "success": "Thanks for subscribing!"
+  },
+  "customer": {
+    "login": {
+      "title": "Sign in",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign in",
+      "forgot": "Forgot password?",
+      "no_account": "New here?",
+      "create_account": "Create an account"
+    },
+    "register": {
+      "title": "Create account",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "submit": "Create account"
+    },
+    "account": {
+      "title": "Account",
+      "welcome": "Welcome back",
+      "order_history": "Order history",
+      "no_orders": "You have no orders yet.",
+      "manage_addresses": "Manage addresses",
+      "sign_out": "Sign out"
+    }
+  }
+}

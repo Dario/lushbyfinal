@@ -1,0 +1,45 @@
+{%- comment -%} Usage: {% render 'product-card', product: product %} {%- endcomment -%}
+<a href="{{ product.url }}" class="product-card">
+  <div class="product-card__media">
+    {%- if product.featured_image -%}
+      {%- assign card_alt = product.title | escape -%}
+      {{ product.featured_image | image_url: width: 600 | image_tag: alt: card_alt, class: 'product-card__image', loading: 'lazy' }}
+      {%- if product.images.size > 1 -%}
+        {{ product.images[1] | image_url: width: 600 | image_tag: alt: card_alt, class: 'product-card__image product-card__image--hover', loading: 'lazy' }}
+      {%- endif -%}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'product-card__image' }}
+    {%- endif -%}
+    {%- if product.compare_at_price > product.price -%}
+      <span class="product-card__badge product-card__badge--sale">Sale</span>
+    {%- elsif product.tags contains 'new' -%}
+      <span class="product-card__badge">New</span>
+    {%- elsif product.tags contains 'bestseller' -%}
+      <span class="product-card__badge">Bestseller</span>
+    {%- endif -%}
+    <button type="button" class="product-card__wishlist" data-wishlist aria-label="Add to wishlist" aria-pressed="false">
+      {% render 'icon-heart' %}
+    </button>
+  </div>
+  <div class="product-card__info">
+    {%- if product.vendor != blank -%}
+      <p class="product-card__vendor">{{ product.vendor }}</p>
+    {%- endif -%}
+    <h3 class="product-card__title">{{ product.title }}</h3>
+    {%- assign rating = product.metafields.reviews.rating.value -%}
+    {%- if rating != blank -%}
+      {%- assign rating_rounded = rating | round -%}
+      <div class="product-card__rating" aria-label="Rated {{ rating_rounded }} out of 5">
+        <span class="product-card__stars" aria-hidden="true">
+          {%- for i in (1..5) -%}{%- if i <= rating_rounded -%}&#9733;{%- else -%}&#9734;{%- endif -%}{%- endfor -%}
+        </span>
+        {%- if product.metafields.reviews.rating_count != blank -%}
+          <span class="product-card__review-count">{{ product.metafields.reviews.rating_count }}</span>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+    <div class="product-card__price">
+      {% render 'price', product: product %}
+    </div>
+  </div>
+</a>

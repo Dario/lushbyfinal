@@ -1,0 +1,64 @@
+<section class="editorial-grid">
+  <div class="page-width">
+    <header class="editorial-grid__header">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="editorial-grid__title">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <p class="editorial-grid__sub">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+    </header>
+    <div class="editorial-grid__grid">
+      {%- for block in section.blocks -%}
+        <a href="{{ block.settings.link }}" class="editorial-card" {{ block.shopify_attributes }}>
+          <span class="editorial-card__media">
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 900 | image_tag: alt: block.settings.title, class: 'editorial-card__image' }}
+            {%- else -%}
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'editorial-card__image' }}
+            {%- endif -%}
+          </span>
+          {%- if block.settings.category != blank -%}
+            <span class="editorial-card__cat">{{ block.settings.category }}</span>
+          {%- endif -%}
+          <span class="editorial-card__title">{{ block.settings.title }}</span>
+          {%- if block.settings.excerpt != blank -%}
+            <span class="editorial-card__excerpt">{{ block.settings.excerpt }}</span>
+          {%- endif -%}
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Editorial grid",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "The Edit" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "Tips, tutorials and stories from the community." }
+  ],
+  "blocks": [
+    {
+      "type": "article",
+      "name": "Article",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "category", "label": "Category", "default": "Tutorial" },
+        { "type": "text", "id": "title", "label": "Title", "default": "The 5-minute summer glow" },
+        { "type": "text", "id": "excerpt", "label": "Excerpt", "default": "A pared-back routine for radiant, no-makeup skin in minutes." },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "default": {
+    "blocks": [
+      { "type": "article", "settings": { "category": "Tutorial", "title": "The 5-minute summer glow" } },
+      { "type": "article", "settings": { "category": "Guide", "title": "How to layer your serums" } },
+      { "type": "article", "settings": { "category": "Stories", "title": "Behind the scent" } }
+    ]
+  },
+  "presets": [{ "name": "Editorial grid" }]
+}
+{% endschema %}

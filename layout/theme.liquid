@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#000000">
+    <link rel="canonical" href="{{ canonical_url }}">
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- endif -%}
+
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; {{ 'general.meta.tags' | t: tags: current_tags | join: ', ' }}{% endif -%}
+      {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+
+    {% render 'meta-tags' %}
+
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+
+    {{ content_for_header }}
+
+    {%- liquid
+      assign body_font = settings.body_font
+      assign heading_font = settings.heading_font
+    -%}
+
+    {% style %}
+      :root {
+        --color-bg: {{ settings.color_background.red }}, {{ settings.color_background.green }}, {{ settings.color_background.blue }};
+        --color-fg: {{ settings.color_foreground.red }}, {{ settings.color_foreground.green }}, {{ settings.color_foreground.blue }};
+        --color-accent: {{ settings.color_accent.red }}, {{ settings.color_accent.green }}, {{ settings.color_accent.blue }};
+        --color-sale: {{ settings.color_sale.red }}, {{ settings.color_sale.green }}, {{ settings.color_sale.blue }};
+        --color-muted: {{ settings.color_muted.red }}, {{ settings.color_muted.green }}, {{ settings.color_muted.blue }};
+        --font-body-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+        --font-body-weight: {{ body_font.weight }};
+        --font-heading-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+        --font-heading-weight: {{ heading_font.weight }};
+        --page-width: {{ settings.page_width }}px;
+      }
+      {{ body_font | font_face: font_display: 'swap' }}
+      {{ body_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
+      {{ body_font | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
+      {{ heading_font | font_face: font_display: 'swap' }}
+      {{ heading_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
+    {% endstyle %}
+
+    {{ 'theme.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'theme.js' | asset_url }}" defer></script>
+  </head>
+
+  <body class="template-{{ template | replace: '.', '-' | handle }}">
+    <a class="skip-to-content" href="#MainContent">{{ 'accessibility.skip_to_content' | t }}</a>
+
+    {% sections 'header-group' %}
+
+    <main id="MainContent" role="main">
+      {{ content_for_layout }}
+    </main>
+
+    {% sections 'footer-group' %}
+
+    <ui-cart-drawer id="CartDrawer" hidden>
+      <div class="cart-drawer__overlay" data-cart-close></div>
+      <aside class="cart-drawer__panel" aria-label="Cart">
+        <header class="cart-drawer__header">
+          <h2>{{ 'cart.general.title' | t }}</h2>
+          <button class="cart-drawer__close" data-cart-close aria-label="Close cart">
+            {% render 'icon-close' %}
+          </button>
+        </header>
+        <div class="cart-drawer__body" data-cart-body>
+          <p class="cart-drawer__empty">{{ 'cart.general.empty' | t }}</p>
+        </div>
+      </aside>
+    </ui-cart-drawer>
+  </body>
+</html>

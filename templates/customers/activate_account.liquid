@@ -1,0 +1,13 @@
+<section class="auth-page">
+  <div class="page-width auth-page__inner">
+    <h1>Activate account</h1>
+    {%- form 'activate_customer_password', class: 'auth-form' -%}
+      {{ form.errors | default_errors }}
+      <label for="Password">Password</label>
+      <input type="password" id="Password" name="customer[password]" required>
+      <label for="PasswordConfirm">Confirm password</label>
+      <input type="password" id="PasswordConfirm" name="customer[password_confirmation]" required>
+      <button type="submit" class="btn btn--primary btn--block">Activate</button>
+    {%- endform -%}
+  </div>
+</section>

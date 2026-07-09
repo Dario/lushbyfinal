@@ -1,0 +1,121 @@
+<header class="site-header" data-sticky="{{ section.settings.sticky }}">
+  <div class="site-header__inner page-width">
+    <button class="site-header__menu-toggle" aria-label="Open menu" data-menu-toggle>
+      {% render 'icon-menu' %}
+    </button>
+
+    <a href="{{ routes.root_url }}" class="site-header__logo">
+      {%- if section.settings.logo != blank -%}
+        {{ section.settings.logo | image_url: width: 240 | image_tag: alt: shop.name, class: 'site-header__logo-image' }}
+      {%- else -%}
+        <span class="site-header__logo-text">{{ shop.name }}</span>
+      {%- endif -%}
+    </a>
+
+    <div class="site-header__search-wrap">
+      <form action="{{ routes.search_url }}" method="get" role="search" class="site-header__search" data-search-inline>
+        {% render 'icon-search' %}
+        <input type="search" name="q" class="site-header__search-input"
+               placeholder="Search products, brands &amp; more"
+               autocomplete="off" spellcheck="false"
+               data-search-input data-search-input-inline aria-label="Search">
+        <input type="hidden" name="type" value="product">
+      </form>
+      <div class="site-header__search-dropdown" data-search-results hidden></div>
+    </div>
+
+    <div class="site-header__actions">
+      <button type="button" class="site-header__action site-header__search-trigger" data-search-open aria-label="Search" aria-expanded="false">
+        {% render 'icon-search' %}
+        <span class="site-header__action-label">Search</span>
+      </button>
+      <a href="{{ routes.account_url }}" class="site-header__action">
+        {% render 'icon-user' %}
+        <span class="site-header__action-label">Account</span>
+      </a>
+      {%- if section.settings.stores_url != blank -%}
+        <a href="{{ section.settings.stores_url }}" class="site-header__action site-header__action--desktop">
+          {% render 'icon-pin' %}
+          <span class="site-header__action-label">Stores</span>
+        </a>
+      {%- endif -%}
+      <a href="{{ section.settings.wishlist_url | default: '#' }}" class="site-header__action site-header__action--desktop">
+        {% render 'icon-heart' %}
+        <span class="site-header__action-label">Wishlist</span>
+      </a>
+      <button class="site-header__action site-header__cart" data-cart-open aria-label="Open cart">
+        {% render 'icon-cart' %}
+        <span class="site-header__action-label">Bag</span>
+        <span class="site-header__cart-count" data-cart-count>{{ cart.item_count }}</span>
+      </button>
+    </div>
+  </div>
+
+  {%- if section.settings.menu != blank -%}
+    <nav class="site-header__catnav" aria-label="Primary">
+      <ul class="site-header__catnav-list page-width">
+        {%- for link in section.settings.menu.links -%}
+          {%- liquid
+            assign link_class = 'site-header__catnav-link'
+            if link.title == 'Sale'
+              assign link_class = 'site-header__catnav-link site-header__catnav-link--sale'
+            elsif link.title == 'New'
+              assign link_class = 'site-header__catnav-link site-header__catnav-link--accent'
+            endif
+          -%}
+          <li class="site-header__catnav-item">
+            <a href="{{ link.url }}" class="{{ link_class }}">{{ link.title }}</a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+  {%- endif -%}
+
+  <div class="site-header__mobile-menu" data-mobile-menu hidden>
+    <ul>
+      {%- for link in section.settings.menu.links -%}
+        <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+      {%- endfor -%}
+    </ul>
+  </div>
+
+  {%- comment -%} Predictive search popover {%- endcomment -%}
+  <div class="predictive-search" data-search-popover hidden>
+    <div class="predictive-search__overlay" data-search-close></div>
+    <div class="predictive-search__panel">
+      <form action="{{ routes.search_url }}" method="get" role="search" class="predictive-search__form">
+        <div class="page-width predictive-search__form-inner">
+          {% render 'icon-search' %}
+          <input type="search"
+                 name="q"
+                 class="predictive-search__input"
+                 placeholder="Search products, brands, ingredients..."
+                 autocomplete="off"
+                 spellcheck="false"
+                 data-search-input
+                 aria-label="Search">
+          <input type="hidden" name="type" value="product">
+          <button type="button" class="predictive-search__close" data-search-close aria-label="Close search">
+            {% render 'icon-close' %}
+          </button>
+        </div>
+      </form>
+      <div class="predictive-search__results page-width" data-search-results>
+        <p class="predictive-search__hint">Start typing to see suggestions.</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    { "type": "url", "id": "stores_url", "label": "Stores link" },
+    { "type": "url", "id": "wishlist_url", "label": "Wishlist link" },
+    { "type": "checkbox", "id": "sticky", "label": "Sticky header", "default": true }
+  ]
+}
+{% endschema %}

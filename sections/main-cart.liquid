@@ -1,0 +1,62 @@
+<section class="cart-page">
+  <div class="page-width">
+    <h1 class="cart-page__title">Your bag</h1>
+
+    {%- if cart.item_count == 0 -%}
+      <div class="cart-page__empty">
+        <p>Your bag is empty.</p>
+        <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary">Continue shopping</a>
+      </div>
+    {%- else -%}
+      <form action="{{ routes.cart_url }}" method="post" novalidate>
+        <table class="cart-table">
+          <thead>
+            <tr><th>Product</th><th>Quantity</th><th>Total</th></tr>
+          </thead>
+          <tbody>
+            {%- for item in cart.items -%}
+              <tr class="cart-table__row">
+                <td class="cart-table__product">
+                  <a href="{{ item.url }}" class="cart-table__image">
+                    {%- assign item_alt = item.title | escape -%}
+                    {{ item.image | image_url: width: 200 | image_tag: alt: item_alt, loading: 'lazy' }}
+                  </a>
+                  <div class="cart-table__info">
+                    <a href="{{ item.url }}" class="cart-table__name">{{ item.product.title }}</a>
+                    {%- unless item.variant.title contains 'Default' -%}
+                      <p class="cart-table__variant">{{ item.variant.title }}</p>
+                    {%- endunless -%}
+                    <p class="cart-table__price">{{ item.original_price | money }}</p>
+                  </div>
+                </td>
+                <td>
+                  <input type="number" name="updates[{{ item.key }}]" value="{{ item.quantity }}" min="0" class="cart-table__qty">
+                </td>
+                <td class="cart-table__total">{{ item.original_line_price | money }}</td>
+              </tr>
+            {%- endfor -%}
+          </tbody>
+        </table>
+
+        <div class="cart-page__footer">
+          <div class="cart-page__subtotal">
+            <span>Subtotal</span>
+            <strong>{{ cart.total_price | money }}</strong>
+          </div>
+          <p class="cart-page__taxes">Shipping & taxes calculated at checkout.</p>
+          <div class="cart-page__actions">
+            <button type="submit" name="update" class="btn btn--outline">Update</button>
+            <button type="submit" name="checkout" class="btn btn--primary">Checkout</button>
+          </div>
+        </div>
+      </form>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Cart",
+  "settings": []
+}
+{% endschema %}

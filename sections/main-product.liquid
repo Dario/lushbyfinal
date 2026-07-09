@@ -1,0 +1,130 @@
+<section class="product-page" data-product-section>
+  <div class="page-width product-page__inner">
+    <div class="product-page__media">
+      {%- if product.featured_media -%}
+        <div class="product-page__gallery">
+          {%- for media in product.media -%}
+            {%- assign media_alt = media.alt | default: product.title | escape -%}
+            <div class="product-page__media-item">
+              {{ media | image_url: width: 1200 | image_tag: alt: media_alt, class: 'product-page__image', loading: 'lazy' }}
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'product-page__image' }}
+      {%- endif -%}
+    </div>
+
+    <div class="product-page__details">
+      {%- if product.vendor != blank -%}
+        <p class="product-page__vendor">{{ product.vendor }}</p>
+      {%- endif -%}
+      <h1 class="product-page__title" data-product-title>{{ product.title }}</h1>
+
+      <div class="product-page__price" data-product-price>
+        {% render 'price', product: product %}
+      </div>
+
+      <form action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data" class="product-form" data-product-form>
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" data-variant-id>
+
+        {%- unless product.has_only_default_variant -%}
+          {%- for option in product.options_with_values -%}
+            {%- assign opt_name_lower = option.name | downcase -%}
+            {%- assign is_color = false -%}
+            {%- if opt_name_lower contains 'color' or opt_name_lower contains 'colour' or opt_name_lower contains 'shade' -%}
+              {%- assign is_color = true -%}
+            {%- endif -%}
+
+            <fieldset class="product-form__option {% if is_color %}product-form__option--swatch{% endif %}" data-option-index="{{ forloop.index0 }}">
+              <legend class="product-form__option-label">
+                <span>{{ option.name }}:</span>
+                <span class="product-form__option-selected" data-option-selected>{{ option.selected_value }}</span>
+              </legend>
+              <div class="product-form__option-values">
+                {%- for value in option.values -%}
+                  {%- liquid
+                    assign swatch_image = ''
+                    if is_color
+                      for variant in product.variants
+                        if variant.options[forloop.parentloop.index0] == value and variant.featured_image
+                          assign swatch_image = variant.featured_image | image_url: width: 80
+                          break
+                        endif
+                      endfor
+                    endif
+                  -%}
+                  <label class="product-form__option-value {% if is_color %}product-form__swatch{% endif %}" {% if is_color and swatch_image != '' %}style="--swatch-image: url('{{ swatch_image }}');"{% elsif is_color %}style="--swatch-color: {{ value | downcase | replace: ' ', '' | handle }};"{% endif %} aria-label="{{ value }}">
+                    <input type="radio" name="options[{{ option.name | escape }}]" value="{{ value | escape }}" data-option-input {% if option.selected_value == value %}checked{% endif %}>
+                    <span class="product-form__option-inner">
+                      {%- unless is_color -%}{{ value }}{%- endunless -%}
+                    </span>
+                  </label>
+                {%- endfor -%}
+              </div>
+            </fieldset>
+          {%- endfor -%}
+        {%- endunless -%}
+
+        <div class="product-form__quantity">
+          <label for="Quantity">Quantity</label>
+          <input type="number" id="Quantity" name="quantity" value="1" min="1" inputmode="numeric">
+        </div>
+
+        <button type="submit" name="add" class="btn btn--primary btn--block product-form__submit" data-add-button {% unless product.available %}disabled{% endunless %}>
+          <span data-add-label>
+            {%- if product.available -%}
+              Add to bag
+            {%- else -%}
+              Sold out
+            {%- endif -%}
+          </span>
+        </button>
+      </form>
+
+      {%- if product.description != blank -%}
+        <div class="product-page__description rte">{{ product.description }}</div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- comment -%} Variant JSON for client-side switching {%- endcomment -%}
+  <script type="application/json" data-product-json>
+    {{ product.variants | json }}
+  </script>
+  <script type="application/json" data-product-featured-image>
+    {%- if product.featured_image -%}
+      {{ product.featured_image | image_url: width: 200 | json }}
+    {%- else -%}
+      ""
+    {%- endif -%}
+  </script>
+</section>
+
+{%- comment -%} Sticky add-to-bag bar (shown when main button scrolls out of view) {%- endcomment -%}
+<div class="sticky-atc" data-sticky-atc hidden aria-hidden="true">
+  <div class="page-width sticky-atc__inner">
+    <div class="sticky-atc__product">
+      {%- if product.featured_image -%}
+        {%- assign sticky_alt = product.title | escape -%}
+        {{ product.featured_image | image_url: width: 120 | image_tag: alt: sticky_alt, class: 'sticky-atc__image', loading: 'lazy' }}
+      {%- endif -%}
+      <div class="sticky-atc__info">
+        <p class="sticky-atc__title">{{ product.title }}</p>
+        <div class="sticky-atc__price" data-sticky-price>{% render 'price', product: product %}</div>
+      </div>
+    </div>
+    <div class="sticky-atc__actions">
+      <button type="button" class="btn btn--primary sticky-atc__add" data-sticky-add {% unless product.available %}disabled{% endunless %}>
+        {%- if product.available -%}Add to bag{%- else -%}Sold out{%- endif -%}
+      </button>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product",
+  "settings": []
+}
+{% endschema %}

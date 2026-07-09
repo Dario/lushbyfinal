@@ -1,0 +1,33 @@
+<section class="search-results">
+  <div class="page-width">
+    <header class="search-results__header">
+      <h1 class="search-results__title">Search</h1>
+      <form action="{{ routes.search_url }}" method="get" class="search-form">
+        <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search products, brands, ingredients..." aria-label="Search">
+        <button type="submit" class="btn btn--primary">Search</button>
+      </form>
+      {%- if search.performed -%}
+        <p class="search-results__count">{{ search.results_count }} results for &ldquo;{{ search.terms }}&rdquo;</p>
+      {%- endif -%}
+    </header>
+
+    {%- if search.performed and search.results.size > 0 -%}
+      <div class="product-grid product-grid--4">
+        {%- for item in search.results -%}
+          {%- if item.object_type == 'product' -%}
+            {% render 'product-card', product: item %}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- elsif search.performed -%}
+      <p>No results found. Try a different search term.</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Search",
+  "settings": []
+}
+{% endschema %}

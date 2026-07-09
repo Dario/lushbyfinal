@@ -1,0 +1,16 @@
+{
+  "type": "footer",
+  "name": "Footer group",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "about": { "type": "text", "settings": { "heading": "Lushby", "text": "<p>Clean, conscious beauty curated for every skin story.</p>" } },
+        "shop": { "type": "menu", "settings": { "heading": "Shop" } },
+        "newsletter": { "type": "newsletter", "settings": { "heading": "Join the Lushby list", "subheading": "New launches, exclusive offers and beauty edits." } }
+      },
+      "block_order": ["about", "shop", "newsletter"]
+    }
+  },
+  "order": ["footer"]
+}

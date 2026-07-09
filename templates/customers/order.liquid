@@ -1,0 +1,13 @@
+<section class="page-width">
+  <h1>Order {{ order.name }}</h1>
+  <p>Placed on {{ order.created_at | date: '%b %-d, %Y' }}</p>
+  <table class="orders-table">
+    <thead><tr><th>Product</th><th>Qty</th><th>Price</th></tr></thead>
+    <tbody>
+      {%- for line in order.line_items -%}
+        <tr><td>{{ line.title }}</td><td>{{ line.quantity }}</td><td>{{ line.original_line_price | money }}</td></tr>
+      {%- endfor -%}
+    </tbody>
+  </table>
+  <p><strong>Total:</strong> {{ order.total_price | money }}</p>
+</section>

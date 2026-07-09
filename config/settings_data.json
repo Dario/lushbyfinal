@@ -1,0 +1,24 @@
+{
+  "current": {
+    "color_background": "#fbf8f3",
+    "color_foreground": "#221c17",
+    "color_accent": "#a8675a",
+    "color_sale": "#b23b3b",
+    "color_muted": "#f1eae0",
+    "body_font": "jost_n4",
+    "heading_font": "cormorant_garamond_n6",
+    "page_width": 1440
+  },
+  "presets": {
+    "Lushby": {
+      "color_background": "#fbf8f3",
+      "color_foreground": "#221c17",
+      "color_accent": "#a8675a",
+      "color_sale": "#b23b3b",
+      "color_muted": "#f1eae0",
+      "body_font": "jost_n4",
+      "heading_font": "cormorant_garamond_n6",
+      "page_width": 1440
+    }
+  }
+}

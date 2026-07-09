@@ -1,0 +1,15 @@
+<section class="page-section">
+  <div class="page-width page-section__inner">
+    <header class="page-section__header">
+      <h1 class="page-section__title">{{ page.title }}</h1>
+    </header>
+    <div class="page-section__content rte">{{ page.content }}</div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Page",
+  "settings": []
+}
+{% endschema %}

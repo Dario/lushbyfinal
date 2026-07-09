@@ -1,0 +1,23 @@
+<article class="article">
+  <div class="page-width article__inner">
+    <header class="article__header">
+      <p class="article__meta">{{ article.published_at | date: '%B %-d, %Y' }}</p>
+      <h1 class="article__title">{{ article.title }}</h1>
+      {%- if article.author != blank -%}
+        <p class="article__author">By {{ article.author }}</p>
+      {%- endif -%}
+    </header>
+    {%- if article.image -%}
+      {%- assign article_alt = article.title | escape -%}
+      {{ article.image | image_url: width: 1600 | image_tag: alt: article_alt, class: 'article__image' }}
+    {%- endif -%}
+    <div class="article__content rte">{{ article.content }}</div>
+  </div>
+</article>
+
+{% schema %}
+{
+  "name": "Article",
+  "settings": []
+}
+{% endschema %}

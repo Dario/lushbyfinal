@@ -1,0 +1,28 @@
+<section class="newsletter-section">
+  <div class="page-width newsletter-section__inner">
+    <h2 class="newsletter-section__heading">{{ section.settings.heading }}</h2>
+    {%- if section.settings.subheading != blank -%}
+      <p class="newsletter-section__sub">{{ section.settings.subheading }}</p>
+    {%- endif -%}
+    {%- form 'customer', class: 'newsletter-section__form' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <input type="email" name="contact[email]" placeholder="Email address" required aria-label="Email">
+      <button type="submit" class="btn btn--primary">{{ section.settings.button_label }}</button>
+      {%- if form.posted_successfully? -%}
+        <p class="newsletter-section__success">Thanks for subscribing!</p>
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Be the first to know" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "Get early access to launches, exclusive offers, and expert beauty tips." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Sign up" }
+  ],
+  "presets": [{ "name": "Newsletter" }]
+}
+{% endschema %}
