@@ -4,7 +4,8 @@
     "theme_name": "Lushby",
     "theme_version": "1.0.0",
     "theme_author": "You",
-    "theme_documentation_url": "https://shopify.dev/themes"
+    "theme_documentation_url": "https://shopify.dev/themes",
+    "theme_support_email": "support@lushby.live"
   },
   {
     "name": "Colors",
