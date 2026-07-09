@@ -6,7 +6,7 @@
     "color_sale": "#b23b3b",
     "color_muted": "#f1eae0",
     "body_font": "jost_n4",
-    "heading_font": "cormorant_garamond_n6",
+    "heading_font": "playfair_display_n4",
     "page_width": 1440
   },
   "presets": {
@@ -17,7 +17,7 @@
       "color_sale": "#b23b3b",
       "color_muted": "#f1eae0",
       "body_font": "jost_n4",
-      "heading_font": "cormorant_garamond_n6",
+      "heading_font": "playfair_display_n4",
       "page_width": 1440
     }
   }
