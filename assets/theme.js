@@ -155,6 +155,17 @@
   // ===== Product page: variant switching + swatch picker =====
   const productSection = document.querySelector('[data-product-section]');
   if (productSection) {
+    // Gallery: thumbnail click swaps the main image
+    const galleryMain = productSection.querySelector('[data-main-image]');
+    const galleryThumbs = productSection.querySelectorAll('[data-thumb]');
+    galleryThumbs.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (galleryMain) galleryMain.src = btn.dataset.full;
+        galleryThumbs.forEach(function (b) { b.classList.remove('is-active'); });
+        btn.classList.add('is-active');
+      });
+    });
+
     const variantJsonEl = productSection.querySelector('[data-product-json]');
     const variants = variantJsonEl ? JSON.parse(variantJsonEl.textContent) : [];
     const variantIdInput = productSection.querySelector('[data-variant-id]');

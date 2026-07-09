@@ -2,13 +2,21 @@
   <div class="page-width product-page__inner">
     <div class="product-page__media">
       {%- if product.featured_media -%}
-        <div class="product-page__gallery">
-          {%- for media in product.media -%}
-            {%- assign media_alt = media.alt | default: product.title | escape -%}
-            <div class="product-page__media-item">
-              {{ media | image_url: width: 1200 | image_tag: alt: media_alt, class: 'product-page__image', loading: 'lazy' }}
+        <div class="product-page__gallery" data-gallery>
+          {%- assign featured_alt = product.featured_media.alt | default: product.title | escape -%}
+          <div class="product-page__main-image">
+            <img src="{{ product.featured_media | image_url: width: 1200 }}" alt="{{ featured_alt }}" class="product-page__image" data-main-image>
+          </div>
+          {%- if product.media.size > 1 -%}
+            <div class="product-page__thumbs" data-gallery-thumbs>
+              {%- for media in product.media -%}
+                {%- assign media_alt = media.alt | default: product.title | escape -%}
+                <button type="button" class="product-page__thumb{% if forloop.first %} is-active{% endif %}" data-thumb data-full="{{ media | image_url: width: 1200 }}" aria-label="View image {{ forloop.index }} of {{ product.media.size }}">
+                  {{ media | image_url: width: 160 | image_tag: alt: media_alt, class: 'product-page__thumb-img', loading: 'lazy' }}
+                </button>
+              {%- endfor -%}
             </div>
-          {%- endfor -%}
+          {%- endif -%}
         </div>
       {%- else -%}
         {{ 'product-1' | placeholder_svg_tag: 'product-page__image' }}
