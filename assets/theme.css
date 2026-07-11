@@ -314,6 +314,8 @@ input, select, textarea {
   margin: 0 0 22px;
 }
 .hero-banner__heading {
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight);
   font-size: clamp(2.6rem, 5vw, 4.4rem);
   line-height: 1;
   letter-spacing: -0.01em;
