@@ -425,12 +425,72 @@
     let current = 0;
     let timer = null;
 
+    // Glitter: left-to-right ignite when a slide's image loads, settling into a sparse afterglow;
+    // full-banner glimmer, continuously, on CTA hover
+    const glitterEnabled = slider.hasAttribute('data-glitter') && !reducedMotion;
+    const colors = ['#ffe9a8', '#ffd76e', '#fff3d6', '#f2c9b0', '#d98b6f', '#f4b8b0', '#e7c9e8', '#ffffff'];
+    const IGNITE_DURATION = 2.0; // seconds for the wave to cross the banner
+    const DECAY_DURATION = 2.0; // seconds the sparse afterglow keeps settling after that
+
+    function makeGlitter(xPct, yPct, delay, decay) {
+      const g = document.createElement('span');
+      const star = Math.random() < 0.35;
+      g.className = 'hero-glitter ' + (star ? 'hero-glitter--star' : 'hero-glitter--dot') + (decay ? ' hero-glitter--decay' : '');
+      g.style.left = xPct + '%';
+      g.style.top = yPct + '%';
+      let size = star ? 10 + Math.random() * 16 : 3 + Math.random() * 7;
+      if (decay) size *= 0.7;
+      g.style.setProperty('--s', size + 'px');
+      g.style.setProperty('--d', (decay ? (1.2 + Math.random() * 0.8) : (0.9 + Math.random() * 0.7)) + 's');
+      g.style.setProperty('--c', colors[Math.floor(Math.random() * colors.length)]);
+      g.style.setProperty('--sweep-delay', delay + 's');
+      slider.appendChild(g);
+      g.addEventListener('animationend', function () { this.remove(); });
+    }
+    // ignition wave: dense, left-to-right, like a gradient sweep
+    function spawnIgnite() {
+      for (let i = 0; i < 70; i++) {
+        const xPct = Math.random() * 100;
+        const delay = (xPct / 100) * IGNITE_DURATION + Math.random() * 0.1;
+        makeGlitter(xPct, Math.random() * 100, delay, false);
+      }
+    }
+    // decay wave: sparse, dim afterglow settling across the following ~2s
+    function spawnDecay() {
+      for (let i = 0; i < 22; i++) {
+        const delay = IGNITE_DURATION + Math.random() * DECAY_DURATION;
+        makeGlitter(Math.random() * 100, Math.random() * 100, delay, true);
+      }
+    }
+    // whole banner glimmers at once, no directional wave — used on CTA hover
+    function spawnBurst(count) {
+      for (let i = 0; i < count; i++) {
+        makeGlitter(Math.random() * 100, Math.random() * 100, Math.random() * 0.15, false);
+      }
+    }
+    function triggerSlideSweep(index) {
+      if (!glitterEnabled) return;
+      const slideEl = slides[index];
+      const bg = slideEl && slideEl.querySelector('.hero-slider__bg');
+      const match = bg && bg.style.backgroundImage.match(/url\(["']?(.*?)["']?\)/);
+      function fire() { spawnIgnite(); spawnDecay(); }
+      if (match && match[1]) {
+        const preload = new Image();
+        preload.onload = fire;
+        preload.src = match[1];
+        if (preload.complete) fire();
+      } else {
+        fire(); // placeholder gradient — already "loaded"
+      }
+    }
+
     function goTo(n) {
       slides.forEach(function (s, i) { s.classList.toggle('is-active', i === n); });
       copies.forEach(function (c, i) { c.classList.toggle('is-active', i === n); });
       dots.forEach(function (d, i) { d.classList.toggle('is-active', i === n); });
       fgs.forEach(function (f) { f.classList.toggle('is-active', parseInt(f.dataset.index, 10) === n); });
       current = n;
+      triggerSlideSweep(n);
     }
     function next() { goTo((current + 1) % slides.length); }
     function restart() {
@@ -441,37 +501,48 @@
       dot.addEventListener('click', function () { goTo(i); restart(); });
     });
     restart();
+    triggerSlideSweep(current);
 
-    // Glitter burst across the banner on CTA hover
-    if (!slider.hasAttribute('data-glitter') || reducedMotion) return;
-    const colors = ['#ffe9a8', '#ffd76e', '#fff3d6', '#ffffff', '#ffc9e0', '#d6ecff'];
-    let glitterTimer = null;
-    function spawn(count) {
-      for (let i = 0; i < count; i++) {
-        const g = document.createElement('span');
-        const star = Math.random() < 0.35;
-        g.className = 'hero-glitter ' + (star ? 'hero-glitter--star' : 'hero-glitter--dot');
-        g.style.left = (Math.random() * 100) + '%';
-        g.style.top = (Math.random() * 100) + '%';
-        g.style.setProperty('--s', (star ? 10 + Math.random() * 16 : 3 + Math.random() * 7) + 'px');
-        g.style.setProperty('--d', (0.5 + Math.random() * 0.7) + 's');
-        g.style.setProperty('--c', colors[Math.floor(Math.random() * colors.length)]);
-        slider.appendChild(g);
-        g.addEventListener('animationend', function () { this.remove(); });
-      }
-    }
+    if (!glitterEnabled) return;
+    let burstTimer = null;
     slider.querySelectorAll('[data-sparkle-cta]').forEach(function (cta) {
       cta.addEventListener('mouseenter', function () {
-        spawn(40);
-        clearInterval(glitterTimer);
-        glitterTimer = setInterval(function () { spawn(24); }, 140);
+        spawnBurst(55);
+        clearInterval(burstTimer);
+        burstTimer = setInterval(function () { spawnBurst(30); }, 220);
       });
       cta.addEventListener('mouseleave', function () {
-        clearInterval(glitterTimer);
-        glitterTimer = null;
+        clearInterval(burstTimer);
+        burstTimer = null;
       });
     });
   });
+
+  // ===== Hero slider: magnetic CTA pull toward cursor =====
+  (function () {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reducedMotion) return;
+    const magnets = document.querySelectorAll('.hero-slider [data-magnetic]');
+    if (!magnets.length) return;
+    const range = 70;
+    document.addEventListener('mousemove', function (e) {
+      magnets.forEach(function (cta) {
+        const rect = cta.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const dx = e.clientX - cx;
+        const dy = e.clientY - cy;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const threshold = range + rect.width / 2;
+        if (dist < threshold) {
+          const pull = Math.max(0, 1 - dist / threshold);
+          cta.style.transform = 'translate(' + (dx * pull * 0.25) + 'px,' + (dy * pull * 0.25) + 'px)';
+        } else {
+          cta.style.transform = '';
+        }
+      });
+    });
+  })();
 
   // ===== AI beauty chat (scripted demo — swap aiRespond() source for a real AI later) =====
   const chatDrawer = document.querySelector('[data-chat-drawer]');

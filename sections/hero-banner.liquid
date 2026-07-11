@@ -17,6 +17,7 @@
   {%- endfor -%}
 
   <div class="hero-banner__overlay hero-banner__overlay--{{ section.settings.text_align }}" style="opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};"></div>
+  <div class="hero-slider__grain" aria-hidden="true"></div>
 
   {%- for block in section.blocks -%}
     {%- assign fg = block.settings.foreground_image -%}
@@ -46,13 +47,16 @@
         {%- if block.settings.text != blank -%}
           <div class="hero-banner__text">{{ block.settings.text }}</div>
         {%- endif -%}
-        {%- if block.settings.button_label != blank -%}
-          {%- assign cta_url = block.settings.button_url -%}
-          {%- if cta_url == blank and block.settings.fg_product != blank -%}
-            {%- assign cta_url = block.settings.fg_product.url -%}
+          {%- if block.settings.button_label != blank -%}
+            {%- assign cta_url = block.settings.button_url -%}
+            {%- if cta_url == blank and block.settings.fg_product != blank -%}
+              {%- assign cta_url = block.settings.fg_product.url -%}
+            {%- endif -%}
+            <a href="{{ cta_url }}" class="btn btn--primary" data-sparkle-cta data-magnetic>
+              <span>{{ block.settings.button_label }}</span>
+              {% render 'icon-arrow-right' %}
+            </a>
           {%- endif -%}
-          <a href="{{ cta_url }}" class="btn btn--primary" data-sparkle-cta>{{ block.settings.button_label }}</a>
-        {%- endif -%}
       </div>
     {%- endfor -%}
   </div>
@@ -89,7 +93,7 @@
       ]
     },
     { "type": "range", "id": "autoplay_speed", "label": "Slide duration", "min": 3, "max": 8, "step": 1, "unit": "s", "default": 5 },
-    { "type": "checkbox", "id": "enable_glitter", "label": "Glitter burst on button hover", "default": true }
+    { "type": "checkbox", "id": "enable_glitter", "label": "Glitter effect", "default": true, "info": "Sweeps left-to-right when each slide's image loads; glimmers across the whole banner while the button is hovered" }
   ],
   "blocks": [
     {
